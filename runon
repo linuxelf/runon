@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 use strict;
-my %procs;
 my $logdir = "/tmp/runon/$$";
 my @pids;
 my $cmd = pop(@ARGV);
@@ -22,11 +21,9 @@ waitpid($_,0) for @pids;
 print "DONE\n";
 
 sub process{
-	my $ret;
 	my ($srv) = @_;
 	print "Running \"$cmd\" on $srv\n";
 	my $log = $logdir . '/' . $srv . '.txt';
 	my $pid = fork() or exec('ssh root@' . $srv . ' "' . $cmd. '" > ' . $log . ' 2> ' . $log . '.err' );
 	push @pids,$pid;
-	$procs{$pid} = $srv;
 }
